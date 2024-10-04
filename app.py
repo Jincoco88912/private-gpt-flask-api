@@ -88,18 +88,28 @@ def contextual_completion():
     except Exception as e:
         return jsonify({"status": "錯誤", "message": str(e)}), 500
      
-# def _list_all_ingested_docs():
-#     """
-#     列出所有已上傳到 PrivateGPT 的文件。
+def _list_all_ingested_docs():
+    """
+    列出所有已上傳到 PrivateGPT 的文件。
     
-#     返回:
-#     list: 包含所有已上傳文件的 doc_id。
-#     """
-#     ingested_docs = []
-#     for doc in client.ingestion.list_ingested().data:
-#         ingested_docs.append(doc.doc_id)
-#         print(f"已上傳文件 ID: {doc.doc_id}")
-#     return ingested_docs
+    返回:
+    list: 包含所有已上傳文件的 doc_id。
+    """
+    ingested_docs = []
+    for doc in client.ingestion.list_ingested().data:
+        ingested_docs.append(doc.doc_id)
+        print(f"已上傳文件 ID: {doc.doc_id}")
+    return ingested_docs
+
+
+@app.route('/list_ingested_docs', methods=['GET'])
+def list_ingested_docs():
+    """處理列出所有已上傳文件的 HTTP GET 請求。"""
+    try:
+        result = _list_all_ingested_docs()
+        return jsonify({"status": "成功", "ingested_doc_ids": result})
+    except Exception as e:
+        return jsonify({"status": "錯誤", "message": str(e)}), 500
 
 # def _chat_completion(content):
 #     """
@@ -115,15 +125,6 @@ def contextual_completion():
 #         messages=[{"role": "user", "content": content}]
 #     )
 #     return chat_result.choices[0].message.content
-
-# @app.route('/list_ingested_docs', methods=['GET'])
-# def list_ingested_docs():
-#     """處理列出所有已上傳文件的 HTTP GET 請求。"""
-#     try:
-#         result = _list_all_ingested_docs()
-#         return jsonify({"status": "成功", "ingested_doc_ids": result})
-#     except Exception as e:
-#         return jsonify({"status": "錯誤", "message": str(e)}), 500
 
 # @app.route('/chat', methods=['POST'])
 # def chat():
