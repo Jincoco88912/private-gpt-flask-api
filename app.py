@@ -48,7 +48,8 @@ def _contextual_completion(prompt, use_context=True, context_filter=None, includ
     dict: 包含完成結果和來源信息的字典。
     """
     result = client.contextual_completions.prompt_completion(
-        prompt=prompt,
+        prompt= '搜尋' + prompt + '相關資料',
+        system_prompt="你是一個有用的助手，根據提供的信息回答問題。請只使用給定的信息，不要添加其他內容。\n如果無法從給定信息中找到答案，請誠實地說明。\n請用繁體中文回答問題\n--------------------\n",
         use_context=use_context,
         context_filter=context_filter,
         include_sources=include_sources
